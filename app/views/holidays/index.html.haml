@@ -1,0 +1,10 @@
+- if @holidays.empty?
+
+  %h1= t('.not')
+
+- else
+
+  %h1= t('.yes')
+
+  - if @holidays.any?{|h| h[:region] != :de}
+    %h2= t('.only', regions: @holidays.first[:regions].map{|r| I18n.t(r)}.to_sentence)
