@@ -19,5 +19,6 @@ end
 group :development do
   # Deploy with Capistrano
   gem 'capistrano'
-  gem 'capistrano_rsync_with_remote_cache'
+  gem 'capistrano-ext'
+  gem 'rvm-capistrano'
 end

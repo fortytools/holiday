@@ -1,26 +1,37 @@
+require 'bundler/capistrano'
+require "rvm/capistrano"
+
 set :application, "holidays"
 
 set :scm, :git
-set :repository,  "git@github.com:fortytools/holidays.git"
+set :repository,  "git@github.com:fortytools/holiday.git"
+set :branch, 'master'
+
+role :web, '78.47.112.207', primary: true
 
 set :deploy_via, :rsync_with_remote_cache
 
-require 'bundler/capistrano'
-load 'deploy/assets'
-
 set :normalize_asset_timestamps, false
 
-set :deploy_to, '/var/www/holidays'
+set :deploy_to, "/var/www/#{application}"
+set :shared_path, "#{deploy_to}/shared"
+
+set :rails_env, 'production'
+
 set :user, 'fortytools'
 
 set :use_sudo, false
 
-role :web, '78.47.112.207'
-role :app, '78.47.112.207'
-role :db, '78.47.112.207', :primary => true
-
 set :bundle_without, [:development, :test]
 
+set :rvm_ruby_string, "1.9.3"
+set :rvm_type, :user
+
+namespace :rvm do
+  task :trust_rvmrc do
+    run "rvm rvmrc trust #{release_path}"
+  end
+end
 after 'deploy:finalize_update', 'deploy:link'
 
 namespace :deploy do

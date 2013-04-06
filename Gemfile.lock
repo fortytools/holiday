@@ -36,6 +36,8 @@ GEM
       net-sftp (>= 2.0.0)
       net-ssh (>= 2.0.14)
       net-ssh-gateway (>= 1.1.0)
+    capistrano-ext (1.2.1)
+      capistrano (>= 1.0.0)
     erubis (2.7.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
@@ -93,6 +95,8 @@ GEM
     rdoc (3.12.2)
       json (~> 1.4)
     ref (1.0.3)
+    rvm-capistrano (1.2.7)
+      capistrano (>= 2.0.0)
     sass (3.2.7)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
@@ -121,9 +125,11 @@ PLATFORMS
 
 DEPENDENCIES
   capistrano
+  capistrano-ext
   haml-rails
   holidays
   rails (= 3.2.13)
+  rvm-capistrano
   sass-rails (~> 3.2.3)
   therubyracer
   uglifier (>= 1.0.3)
