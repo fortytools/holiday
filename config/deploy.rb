@@ -8,6 +8,7 @@ set :repository,  "git@github.com:fortytools/holiday.git"
 set :branch, 'master'
 
 role :web, '78.47.112.207', primary: true
+role :app, '78.47.112.207', primary: true
 
 set :deploy_via, :rsync_with_remote_cache
 
@@ -32,7 +33,6 @@ namespace :rvm do
     run "rvm rvmrc trust #{release_path}"
   end
 end
-after 'deploy:finalize_update', 'deploy:link'
 
 namespace :deploy do
   task :start do ; end

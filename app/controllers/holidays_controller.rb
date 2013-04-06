@@ -1,5 +1,8 @@
 # coding: utf-8
 
+# This is necessary as the holidays gem does some fancy stuff...
+require 'holidays/de'
+
 class HolidaysController < ApplicationController
 
   respond_to :html, :json
