@@ -102,7 +102,7 @@ class HolidaysController < ApplicationController
   end
 
   def set_json_path
-    if request.fullpath == '/'
+    if request.fullpath == '/' || request.fullpath == '/imprint'
       @json_path = today_path + '.json'
     else
       @json_path = request.fullpath + '.json'
