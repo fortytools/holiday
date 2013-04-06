@@ -16,6 +16,8 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-# Deploy with Capistrano
-gem 'capistrano'
-
+group :development do
+  # Deploy with Capistrano
+  gem 'capistrano'
+  gem 'capistrano_rsync_with_remote_cache'
+end

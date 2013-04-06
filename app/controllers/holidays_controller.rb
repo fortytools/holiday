@@ -4,10 +4,16 @@ class HolidaysController < ApplicationController
 
   respond_to :html, :json
 
+  before_filter :set_json_path
+
   def index
     @holidays = Holidays.on(Date.today, :de_)
 
-    respond_with(@holidays)
+    @requested_date = Date.today
+
+    respond_with @holidays do |format|
+      format.html { render 'index' }
+    end
   end
 
   def show
@@ -16,27 +22,45 @@ class HolidaysController < ApplicationController
         date = Date.parse params[:second]
         region = parse_region params[:first]
       else
-        date = Date.parse params[:first] rescue nil
-        region = parse_region params[:first] rescue nil
+        if params[:first]
+          date = Date.parse params[:first] rescue nil
+          region = parse_region params[:first] rescue nil
 
-        if region.nil? && date.nil?
-          raise ArgumentError
+          if region.nil? && date.nil?
+            raise ArgumentError
+          end
         end
 
-        region = :de_ if region.nil?
         date = Date.today if date.nil?
       end
-
-      logger.debug({date: date, region: region}.to_s)
-
-      @holidays = Holidays.on(date, region)
-
-      respond_with @holidays do |format|
-        format.html { render 'index' }
-      end
     rescue
-      respond_with status: :bad_request
+      render text: 'Bad request', status: :bad_request
+      return
     end
+
+    logger.debug({date: date, region: region}.to_s)
+
+    lookup_region = region ? "de_#{region}".to_sym : :de_
+
+    if Holidays::DE.defined_regions.include? lookup_region
+      @holidays = Holidays.on(date, lookup_region)
+    else
+      @holidays = Holidays.on(date, :de_)
+
+      unless lookup_region == :de_ || @holidays.any?{|h| h[:regions].include? :de}
+        @holidays = []
+      end
+    end
+
+    @requested_date = date
+    @requested_region = region
+
+    respond_with @holidays do |format|
+      format.html { render 'index' }
+    end
+  end
+
+  def imprint
   end
 
   private
@@ -71,11 +95,15 @@ class HolidaysController < ApplicationController
 
     raise ArgumentError if region.nil?
 
-    result = "de_#{region}".to_sym
+    return region
+  end
 
-    return result if Holidays::DE.defined_regions.include? result
-
-    return :de_
+  def set_json_path
+    if request.fullpath == '/'
+      @json_path = today_path + '.json'
+    else
+      @json_path = request.fullpath + '.json'
+    end
   end
 end
 

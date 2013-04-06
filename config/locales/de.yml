@@ -222,6 +222,8 @@ de:
   layouts:
     application:
       title: Ist denn heut' schon Feiertag?
+      keyswords: Feiertag, Deutschland, API, JSON, Hamburg, Schleswig-Holstein, Bremen, Mecklenburg-Vorpommern, Niedersachsen, Berlin, Brandenburg, Nordrhein-Westfalen, Hessen, Thüringen, Rheinland-Pfalz, Saarland, Sachsen-Anhalt, Bayern, Baden-Württemberg, Sachsen
+      description: Einfache Anzeige von deutschen Feiertagen, auch via JSON API.
 
     navigation:
       home: Startseite
@@ -230,5 +232,9 @@ de:
 
   holidays:
     index:
+      yeah: Ja! \o/
       not: Leider nein :/
+      only: Aber nur in %{regions}
+      maybe_tomorrow: Aber vielleicht Morgen?
+      bavaria: Oder in Bayern?
 

@@ -1,10 +1,21 @@
 - if @holidays.empty?
 
-  %h1= t('.not')
+  %h1
+    = t('.not')
+
+    %small
+      - if @requested_region.nil?
+        = link_to t('.maybe_tomorrow'), holidays_one_path(first: @requested_date + 1.day)
+      - else
+        = link_to t('.maybe_tomorrow'), holidays_two_path(first: @requested_region, second: @requested_date + 1.day)
+
+      - if @requested_region && @requested_region != 'by'
+        = link_to t('.bavaria'), holidays_two_path(first: 'bayern', second: @requested_date)
 
 - else
 
-  %h1= t('.yes')
+  %h1
+    = t('.yeah')
 
-  - if @holidays.any?{|h| h[:region] != :de}
-    %h2= t('.only', regions: @holidays.first[:regions].map{|r| I18n.t(r)}.to_sentence)
+    - if @holidays.any?{|h| h[:regions] != [:de]}
+      %small= t('.only', regions: @holidays.first[:regions].map{|r| I18n.t(r)}.to_sentence)
